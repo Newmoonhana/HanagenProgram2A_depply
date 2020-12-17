@@ -6,6 +6,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager inst;
     public PlayerPrefsManager pp_mng;
+    public FieldManager field_mng;
+
+    public Camera mainCamera;
 
     void Awake()
     {
