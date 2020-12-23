@@ -58,7 +58,23 @@ public class PlayerManager : MonoBehaviour
             player_ani.SetBool("Is_Dash", false);
         }
 
-        yield return StartCoroutine(GameManager.inst.move_m.Move(player_obj, player_col, player_ani, vector, player_speed, applyRunspeed));
+        //충돌 여부.
+        int layerMask = (-1) - (1 << LayerMask.NameToLayer("Player")); //특정 레이어 제외.
+        RaycastHit2D hit = Physics2D.Raycast(player_tns.position, vector, 1f, layerMask);
+        string col = null;
+        if (hit.collider != null)
+            col = hit.collider.tag;
+        if (col != "NoPassing") //이동 불가 콜라이더 미충돌.
+        {
+            yield return StartCoroutine(GameManager.inst.move_m.Move(player_obj, player_col, player_ani, vector, player_speed, applyRunspeed));
+        }
+        else    //이동 불가 콜라이더 충돌 시.
+        {
+            player_ani.SetFloat("DirX", vector.x);
+            player_ani.SetFloat("DirY", vector.y);
+            player_ani.SetBool("Is_Walking", false);
+        }
+        
 
         if (((Input.GetAxisRaw("Horizontal") == 0 && Input.GetAxisRaw("Vertical") == 0)))
             player_ani.SetBool("Is_Walking", false);
