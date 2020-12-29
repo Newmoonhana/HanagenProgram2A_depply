@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
+    //플레이어 속성값.
+    [SerializeField] Character player_character = new Character(); //현재 플레이 중인 캐릭터.
+
     //플레이어 관련 변수.
     public GameObject player_obj;   //플레이어 오브젝트.
     Transform player_tns;
     Animator player_ani;  //플레이어 오브젝트 애니메이터.
     BoxCollider2D player_col;   //플레이어 캐릭터 컨트롤러.
-    //플레이어 속성값(Character Class 완성되면 옮길 변수).
-    public float player_speed; //플레이어 기본 스피드(플레이어 스프라이트 크기의 약수).
-    public float player_runspeed;  //플레이어 대시 스피드(플레이어 스프라이트 크기의 약수).
 
     //플레이어의 상태.00
     public bool player_applyRunFlag = false;   //대시 중인지 체크(false: X, true: 대시).
@@ -47,7 +47,7 @@ public class PlayerManager : MonoBehaviour
         float applyRunspeed;
         if (Input.GetAxis("Dash") != 0)
         {
-            applyRunspeed = player_runspeed;
+            applyRunspeed = player_character.Get_runspeed();
             player_applyRunFlag = true;
             player_ani.SetBool("Is_Dash", true);
         }
@@ -66,7 +66,7 @@ public class PlayerManager : MonoBehaviour
             col = hit.collider.tag;
         if (col != "NoPassing") //이동 불가 콜라이더 미충돌.
         {
-            yield return StartCoroutine(GameManager.inst.move_m.Move(player_obj, player_col, player_ani, vector, player_speed, applyRunspeed));
+            yield return StartCoroutine(GameManager.inst.move_m.Move(player_obj, player_col, player_ani, vector, player_character.Get_movespeed(), applyRunspeed));
         }
         else    //이동 불가 콜라이더 충돌 시.
         {

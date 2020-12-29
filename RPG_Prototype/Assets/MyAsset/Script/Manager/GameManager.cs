@@ -6,6 +6,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager inst;
+    //매니저 스크립트.
     public PlayerManager player_m;
     public MoveManager move_m;
 
